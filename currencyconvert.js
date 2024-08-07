@@ -7,9 +7,21 @@ const $swapBtn = document.getElementById("swapBtn");
 const $rate = document.getElementById("rate");
 
 
+const saveCurrencyToLocalStorage = () => {
+    localStorage.setItem("currencyFrom", $currencyFromSelect.value);
+    localStorage.setItem("currencyTo", $currencyToSelect.value);
+};
+
+const loadCurrencyFromLocalStorage = () => {
+    const currencyFrom = localStorage.getItem("currencyFrom") || "KRW";
+    const currencyTo = localStorage.getItem("currencyTo") || "USD";
+    return { currencyFrom, currencyTo };
+};
+
 const swapCurrency = () => {
     [$currencyFromSelect.value, $currencyToSelect.value] = [$currencyToSelect.value, $currencyFromSelect.value];
     [$amountFromInput.value, $amountToInput.value] = [$amountToInput.value, $amountFromInput.value];
+    saveCurrencyToLocalStorage();
     updateCurrencyData();
 }
 
@@ -35,17 +47,18 @@ const updateCurrencyData = async () => {
         const exchangeRate = rates[currencyTo] / rates[currencyFrom];
         $amountToInput.value = amountTo;
         $rate.textContent = `1 ${currencyFrom} = ${exchangeRate.toFixed(2)} ${currencyTo}`;
+        saveCurrencyToLocalStorage();
     } catch (error) {
         console.error(error);
         alert("환율 정보를 가져오는 데 실패했습니다.");
     }
 }
 
-const initializeCurrencySelect = (selectEle, rates, defaultValue='USD') => {
+const initializeCurrencySelect = (selectEle, rates, selectedCurrency) => {
     for (currency in rates) {
         const option = document.createElement("option");
         option.value = currency;
-        if (currency === defaultValue) {
+        if (currency === selectedCurrency) {
             option.selected = true;
         }
         option.textContent = currency;
@@ -70,9 +83,11 @@ const fetchExchangeRates = async () => {
 
 const initialize = async () => {
     const rates = await fetchExchangeRates();
+
     if (rates) {
-        initializeCurrencySelect($currencyFromSelect, rates, 'KRW');
-        initializeCurrencySelect($currencyToSelect, rates);
+        const { currencyFrom, currencyTo } = loadCurrencyFromLocalStorage();
+        initializeCurrencySelect($currencyFromSelect, rates, currencyFrom);
+        initializeCurrencySelect($currencyToSelect, rates, currencyTo);
     }
 
     $currencyFromSelect.addEventListener("change", updateCurrencyData);
