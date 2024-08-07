@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Hand:wght@400..700&family=Maven+Pro:wght@400..900&family=Zen+Kaku+Gothic+New&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: rgb(246, 246, 246);
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20vh;
+    font-size: 3rem;
+    font-family: "Edu AU VIC WA NT Hand", cursive;
+    margin-bottom: 30px;
+}
+
+.container {
+    width: 80%;
+    padding: 30px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 20px;
+}
+
+.container label {
+    display: block;
+    font-size: 1.32em;
+    font-family: "Edu AU VIC WA NT Hand", cursive;
+    margin-bottom: 10px;
+}
+
+.currency {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.currency select, .currency input {
+    padding: 10px;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    flex: 1 1 auto;
+}
+
+.currency select {
+    color: indigo;
+}
+
+.currency input {
+    text-align: right;
+    color: rgb(69, 69, 69);
+}
+
+.swap-rate-container {
+    margin-top: 60px;
+    margin-bottom: 60px;
+    border: 0.5px solid #e5e5e5;
+}
+
+#swapBtn {
+    position: absolute;
+    left: 50%;
+    translate: -50% -50%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    background-color: indigo;
+    cursor: pointer;
+    border: none;
+}
+
+.rate {
+    width: 80%;
+    margin: 0 auto;
+    text-align: right;
+    padding: 20px 10px;
+}
+
+@media (max-width: 800px) {
+    .container {
+        width: 90%;
+        margin: 0 5%;
+    }
+
+    .rate {
+        width: 90%;
+        margin: 0 5%;
+    }
+}
