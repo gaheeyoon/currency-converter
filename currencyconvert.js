@@ -1,11 +1,29 @@
 const apiUrl = "https://open.exchangerate-api.com/v6/latest";
+const recommandList = [
+    { country: '한국', currency: 'KRW' },
+    { country: '미국', currency: 'USD' },
+    { country: '유로존', currency: 'EUR' },
+    { country: '일본', currency: 'JPY' },
+    { country: '영국', currency: 'GBP' },
+    { country: '캐나다', currency: 'CAD' },
+    { country: '호주', currency: 'AUD' },
+    { country: '중국', currency: 'CNY' }
+];
 const $currencyFromSelect = document.getElementById("currency-from");
 const $currencyToSelect = document.getElementById("currency-to");
 const $amountFromInput = document.getElementById("amount-from");
 const $amountToInput = document.getElementById("amount-to");
 const $swapBtn = document.getElementById("swapBtn");
+const $recommandListFromUl = document.querySelector(".recommandList.from");
+const $recommandListToUl = document.querySelector(".recommandList.to");
+const $recommandListLis = document.querySelectorAll(".recommandList li");
 const $rate = document.getElementById("rate");
 
+
+const changeCurrency = (selectEle, currency) => {
+    selectEle.value = currency;
+    selectEle.dispatchEvent(new Event('change'));
+}
 
 const saveCurrencyToLocalStorage = () => {
     localStorage.setItem("currencyFrom", $currencyFromSelect.value);
@@ -66,6 +84,20 @@ const initializeCurrencySelect = (selectEle, rates, selectedCurrency) => {
     }
 }
 
+const initializeRecommandList = (ulEle, selectElm) => {
+    const fragment = document.createDocumentFragment();
+    
+    recommandList.forEach(({ country, currency }) => {
+        const li = document.createElement("li");
+        li.setAttribute("data-currency", currency);
+        li.onclick = () => changeCurrency(selectElm, currency);
+        li.textContent = `${country} (${currency})`;
+        fragment.appendChild(li);
+    });
+
+    ulEle.appendChild(fragment); 
+};
+
 const fetchExchangeRates = async () => {
     try {
         const response = await fetch(apiUrl);
@@ -89,6 +121,9 @@ const initialize = async () => {
         initializeCurrencySelect($currencyFromSelect, rates, currencyFrom);
         initializeCurrencySelect($currencyToSelect, rates, currencyTo);
     }
+
+    initializeRecommandList($recommandListFromUl, $currencyFromSelect);
+    initializeRecommandList($recommandListToUl, $currencyToSelect);
 
     $currencyFromSelect.addEventListener("change", updateCurrencyData);
     $currencyToSelect.addEventListener("change", updateCurrencyData);
