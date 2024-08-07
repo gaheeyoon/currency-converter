@@ -41,10 +41,13 @@ const updateCurrencyData = async () => {
     }
 }
 
-const initializeCurrencySelect = (selectEle, rates) => {
+const initializeCurrencySelect = (selectEle, rates, defaultValue='USD') => {
     for (currency in rates) {
         const option = document.createElement("option");
         option.value = currency;
+        if (currency === defaultValue) {
+            option.selected = true;
+        }
         option.textContent = currency;
         selectEle.appendChild(option);
     }
@@ -68,7 +71,7 @@ const fetchExchangeRates = async () => {
 const initialize = async () => {
     const rates = await fetchExchangeRates();
     if (rates) {
-        initializeCurrencySelect($currencyFromSelect, rates);
+        initializeCurrencySelect($currencyFromSelect, rates, 'KRW');
         initializeCurrencySelect($currencyToSelect, rates);
     }
 
